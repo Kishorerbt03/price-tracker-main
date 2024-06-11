@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Search</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #3494e6, #ec6ead); 
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.9); 
+            padding: 20px;
+            border-radius: 8px;
+            width: 40%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .cont1 {
+            display: flex;
+            width: 100%;
+            align-items: center;
+        }
+
+        .search {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 50px;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        .searchbtn {
+            background-color: blueviolet;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 50px;
+            display: flex;
+            height: 40px;
+            align-items: center;
+            font-size: 20px;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .searchbtn:hover {
+            background-color: rgb(92, 53, 129);
+        }
+
+        .searchbtn p {
+            margin: 0;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form method="post" action="/">
+            <label for="product_name">Enter Product Name:</label>
+            <div class="cont1">
+                <input class="search" type="text" name="product_name" required>
+                <button type="submit" class="searchbtn"><p>Search</p><i class='bx bx-search'></i></button>
+            </div>
+        </form>
+    </div>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</body>
+
+</html>

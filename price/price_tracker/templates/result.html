@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Result</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        canvas {
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Product Information</h1>
+        <p><strong>Title:</strong> {{ title }}</p>
+        <p><strong>Current Price:</strong> ₹<span id="currentPrice">{{ current_price }}</span></p>
+        <p><strong>Previous Price:</strong> ₹<span id="storedPrice">{{ stored_price }}</span></p>
+        <p><strong>Price Difference:</strong> ₹{{ price_difference }}</p>
+
+        <canvas id="line-chart"></canvas>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var ctx = document.getElementById("line-chart").getContext("2d");
+
+            var initialData = [0, 20000];
+
+            var chart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: ["Previous Price", "Current Price"],
+                    datasets: [{
+                        label: "Price",
+                        data: initialData,
+                        borderColor: "#4CAF50",
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            max: 150000,
+                            ticks: {
+                                stepSize: 10000,
+                                callback: function (value) {
+                                    return value.toLocaleString("en-IN", {
+                                        style: "currency",
+                                        currency: "INR"
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+        
+            function updateChart(currentPrice, previousPrice) {
+        
+                if (previousPrice === 0) {
+                    
+                    var data = [0, currentPrice];
+                } else {
+                    var data = (previousPrice > currentPrice) ? [previousPrice, currentPrice] : [currentPrice, previousPrice];
+                }
+
+            
+                chart.data.datasets[0].data = data;
+                chart.update({
+                    duration: 800, 
+                    easing: 'easeInOutQuad' 
+                });
+            }
+
+            
+            var currentPriceElement = document.getElementById("currentPrice");
+            var storedPriceElement = document.getElementById("storedPrice");
+
+            var currentPrice = parseFloat(currentPriceElement.innerText.replace("₹", "").replace(",", ""));
+            var previousPrice = parseFloat(storedPriceElement.innerText.replace("₹", "").replace(",", ""));
+
+            
+            updateChart(currentPrice, previousPrice);
+        });
+    </script>
+</body>
+
+</html>

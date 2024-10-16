@@ -7,7 +7,7 @@ Price Tracking: The application checks if the product is already stored in the d
 Database Integration: The application uses MySQL to store product information, including name and price.
 Setup
 Clone the Repository:
-git clone https://github.com/gowtham281/price-tracker.git
+git clone https://github.com/Kishorerb03/price-tracker.git
 cd price-tracker
 Install Dependencies:
 
@@ -19,10 +19,10 @@ Update the host, user, password fields in the app.py file with your MySQL creden
 Run the Application:
 
 python app.py
-The application will be accessible at http://localhost:5000/.
+The application will be accessible at http://localhost:8000/.
 
 Usage
-Visit http://localhost:5000/ in your web browser.
+Visit http://localhost:8000/ in your web browser.
 Enter the name of the product you want to track and submit the form.
 The application will display information about the product, including the current price and any price difference if the product is already in the database.
 Notes

@@ -41,16 +41,34 @@
             width: 100%;
             height: 200px;
         }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Product Information</h1>
-        <p><strong>Title:</strong> {{ title }}</p>
-        <p><strong>Current Price:</strong> ₹<span id="currentPrice">{{ current_price }}</span></p>
-        <p><strong>Previous Price:</strong> ₹<span id="storedPrice">{{ stored_price }}</span></p>
-        <p><strong>Price Difference:</strong> ₹{{ price_difference }}</p>
+        <h1>{{ title }}</h1>
+        <p class="price"><strong>Current Price:</strong> ₹<span id="currentPrice">{{ current_price }}</span></p>
+
+        {% if stored_price != "N/A" %}
+            <p class="price"><strong>Stored Price:</strong> ₹<span id="storedPrice">{{ stored_price }}</span></p>
+            <p class="difference"><strong>Price Difference:</strong> ₹{{ price_difference }}</p>
+        {% else %}
+            <p>This product was added to the database.</p>
+        {% endif %}
+
+        <a href="{{ url_for('index') }}">Search Another Product</a>
 
         <canvas id="line-chart"></canvas>
     </div>
@@ -59,66 +77,52 @@
         document.addEventListener("DOMContentLoaded", function () {
             var ctx = document.getElementById("line-chart").getContext("2d");
 
-            var initialData = [0, 20000];
+            {% if stored_price != "N/A" and current_price != "N/A" %}
+                var storedPrice = parseFloat(document.getElementById("storedPrice").innerText.replace(/[^0-9.-]+/g,""));
+                var currentPrice = parseFloat(document.getElementById("currentPrice").innerText.replace(/[^0-9.-]+/g,""));
+                var labels = ["Stored Price", "Current Price"];
+                var data = [storedPrice, currentPrice];
+            {% else %}
+                var storedPrice = 0;
+                var currentPrice = parseFloat(document.getElementById("currentPrice").innerText.replace(/[^0-9.-]+/g,""));
+                var labels = ["Current Price"];
+                var data = [currentPrice];
+            {% endif %}
 
             var chart = new Chart(ctx, {
                 type: "line",
                 data: {
-                    labels: ["Previous Price", "Current Price"],
+                    labels: labels,
                     datasets: [{
                         label: "Price",
-                        data: initialData,
+                        data: data,
                         borderColor: "#4CAF50",
                         borderWidth: 2,
-                        fill: false
+                        fill: false,
+                        tension: 0.1
                     }]
                 },
                 options: {
                     scales: {
                         y: {
                             beginAtZero: false,
-                            max: 150000,
+                            // Optionally, set max dynamically based on data
+                            // max: Math.max(...data) + 10000,
                             ticks: {
                                 stepSize: 10000,
                                 callback: function (value) {
-                                    return value.toLocaleString("en-IN", {
-                                        style: "currency",
-                                        currency: "INR"
-                                    });
+                                    return '₹' + value.toLocaleString("en-IN");
                                 }
                             }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
                         }
                     }
                 }
             });
-
-        
-            function updateChart(currentPrice, previousPrice) {
-        
-                if (previousPrice === 0) {
-                    
-                    var data = [0, currentPrice];
-                } else {
-                    var data = (previousPrice > currentPrice) ? [previousPrice, currentPrice] : [currentPrice, previousPrice];
-                }
-
-            
-                chart.data.datasets[0].data = data;
-                chart.update({
-                    duration: 800, 
-                    easing: 'easeInOutQuad' 
-                });
-            }
-
-            
-            var currentPriceElement = document.getElementById("currentPrice");
-            var storedPriceElement = document.getElementById("storedPrice");
-
-            var currentPrice = parseFloat(currentPriceElement.innerText.replace("₹", "").replace(",", ""));
-            var previousPrice = parseFloat(storedPriceElement.innerText.replace("₹", "").replace(",", ""));
-
-            
-            updateChart(currentPrice, previousPrice);
         });
     </script>
 </body>

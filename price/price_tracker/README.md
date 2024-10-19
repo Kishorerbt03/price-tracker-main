@@ -3,11 +3,11 @@ This Flask application allows users to track the prices of products on Flipkart.
 
 Features:
 Product Search: Users can enter the name of a product, and the application will retrieve information on the first result from Flipkart.
-Price Tracking: The application checks if the product is already stored in the database. If it is, it compares the current price with the stored price, providing users with the price difference.
+Price Tracking: The application checks if the product is already stored in the database. If it is, it compares the current price with the stored price, providing users with the price difference.If the product is not stored int he database the new product will be added to the database automatically with that current price
 Database Integration: The application uses MySQL to store product information, including name and price.
 Setup
 Clone the Repository:
-git clone https://github.com/Kishorerb03/price-tracker.git
+git clone https://github.com/Kishorerbt03/price-tracker-main.git
 cd price-tracker
 Install Dependencies:
 
